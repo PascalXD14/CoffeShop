@@ -142,25 +142,14 @@
                                 <a href="/cart" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-all duration-300 group/item">
                                     <div class="w-10 h-10 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform relative">
                                         <i class="fas fa-shopping-cart text-amber-600"></i>
-                                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">3</span>
                                     </div>
                                     <div class="flex-1">
                                         <div class="font-semibold">Keranjang</div>
-                                        <div class="text-xs text-gray-500">3 items</div>
+                                        <div class="text-xs text-gray-500">ayo dico</div>
                                     </div>
                                 </a>
                                 
-                                <a href="/checkout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-all duration-300 group/item">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform">
-                                        <i class="fas fa-cash-register text-amber-600"></i>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="font-semibold">Checkout</div>
-                                        <div class="text-xs text-gray-500">Proses pembayaran</div>
-                                    </div>
-                                </a>
-                                
-                                <a href="/order-status" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-all duration-300 group/item">
+                                <a href="{{ route('order.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-all duration-300 group/item">
                                     <div class="w-10 h-10 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform">
                                         <i class="fas fa-clipboard-list text-amber-600"></i>
                                     </div>
@@ -271,7 +260,7 @@
                             <i class="fas fa-cash-register text-sm"></i>
                             <span>Checkout</span>
                         </a>
-                        <a href="/order-status" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 hover:text-amber-600 hover:bg-white transition-all">
+                        <a href="{{ route('order.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 hover:text-amber-600 hover:bg-white transition-all">
                             <i class="fas fa-clipboard-list text-sm"></i>
                             <span>Status Pesanan</span>
                         </a>

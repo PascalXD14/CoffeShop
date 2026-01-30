@@ -17,4 +17,10 @@ class Product extends Model
         'status',
         'image',
     ];
+
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
 }

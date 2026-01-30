@@ -9,11 +9,6 @@
     
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center space-y-4">
-            <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-sm">
-                <span class="text-2xl">☕</span>
-                <span class="text-sm font-semibold text-coffee-700 tracking-wide">MENU SPESIAL</span>
-            </div>
-            
             <h1 class="text-5xl md:text-6xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-coffee-800 via-amber-700 to-orange-600">
                 Daftar Menu AmbaCoffe
             </h1>
@@ -33,6 +28,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
 
             @foreach($products as $product)
+            <a href="{{ route('menu.show', $product->id) }}" class="block">
             <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-coffee-200">
                 
                 <!-- Badge/Label -->

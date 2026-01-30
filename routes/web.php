@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\MenuController as UserMenuController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\KeranjangController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -27,7 +29,23 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/menu/{id}', [UserMenuController::class, 'show'])->name('menu.show');
+    Route::get('/buy-now/{id}', [CheckoutController::class, 'buyNow'])->name('checkout.buyNow');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //keranjang
+    Route::post('/cart/add', [KeranjangController::class, 'add'])->name('cart.add');
+    Route::get('/cart', [KeranjangController::class, 'index'])->name('cart.index');
+    Route::post('/cart/remove/{id}', [KeranjangController::class, 'remove'])->name('cart.remove');
+
+    //checkout
+    Route::get('/checkout/{id}', [CheckoutController::class, 'buyNow'])->name('checkout.buyNow');
+    Route::post('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+
+    //order
+    Route::get('/order-status', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/order-status/{id}', [OrderController::class, 'show'])->name('order.status');
+    Route::get('/order/{id}', [OrderController::class, 'show'])
+        ->name('order.show');
 
 });
 
