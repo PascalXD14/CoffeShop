@@ -6,9 +6,13 @@ use App\Models\Product;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $products = Product::all();
-        return view('home', compact('products'));
-    }
+   public function index()
+{
+    $products = Product::where('status', true)
+                ->latest()  // berdasarkan created_at
+                ->take(6)
+                ->get();
+
+    return view('home', compact('products'));
+}
 }

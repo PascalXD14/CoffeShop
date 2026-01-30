@@ -4,76 +4,91 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Menu;
+use App\Models\Product;
 
 class MenuController extends Controller
 {
-    /**
-     * Tampilkan daftar menu
-     */
-    public function index()
-    {
-        // nanti kalau sudah pakai database
-        $menus = Menu::latest()->paginate(8);
+   public function index(Request $request)
+{
+    $query = Product::query();
 
-        return view('admin.menu.index', compact('menus'));
+    if($request->has('category') && $request->category != null){
+        $query->where('category', $request->category);
     }
 
-    /**
-     * Form tambah menu
-     */
+    $menus = $query->latest()->paginate(8)->withQueryString(); // paginate 8 per halaman, jaga query category
+    return view('admin.menu.index', compact('menus'));
+}
+
+
     public function create()
     {
         return view('admin.menu.create');
     }
 
-    /**
-     * Simpan menu baru
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
-            'category' => 'required',
-            'price'    => 'required|numeric',
-            'stock'    => 'required|numeric',
-            'status'   => 'required',
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'status' => 'required|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        Menu::create($request->all());
+        $product = new Product();
+        $product->name = $request->name;
+        $product->category = $request->category;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->status = $request->status;
 
-        return redirect()
-            ->route('admin.menu.index')
-            ->with('success', 'Menu berhasil ditambahkan');
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public'); // storage/app/public/products
+            $product->image = $path;
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil ditambahkan!');
     }
 
-    /**
-     * Edit menu
-     */
-    public function edit(Menu $menu)
+    public function edit(Product $menu)
     {
         return view('admin.menu.edit', compact('menu'));
     }
 
-    /**
-     * Update menu
-     */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, Product $menu)
     {
-        $menu->update($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'status' => 'required|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
 
-        return redirect()
-            ->route('admin.menu.index')
-            ->with('success', 'Menu berhasil diperbarui');
+        $menu->name = $request->name;
+        $menu->category = $request->category;
+        $menu->price = $request->price;
+        $menu->stock = $request->stock;
+        $menu->status = $request->status;
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $menu->image = $path;
+        }
+
+        $menu->save();
+
+        return redirect()->route('admin.menu.index')->with('success', 'Menu diperbarui');
     }
 
-    /**
-     * Hapus menu
-     */
-    public function destroy(Menu $menu)
+    public function destroy(Product $menu)
     {
         $menu->delete();
-
-        return back()->with('success', 'Menu berhasil dihapus');
+        return back()->with('success', 'Menu dihapus');
     }
 }

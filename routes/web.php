@@ -5,20 +5,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\User\MenuController as UserMenuController;
+use App\Http\Controllers\ProductController;
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC
-|--------------------------------------------------------------------------
-| Bisa diakses guest & user login
-*/
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-/*
-|--------------------------------------------------------------------------
-| AUTH (GUEST ONLY)
-|--------------------------------------------------------------------------
-*/
+Route::get('/menu', [UserMenuController::class, 'index'])->name('menu.user');
+
+
+
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'loginProcess']);
@@ -27,27 +24,21 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'registerProcess']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| AUTHENTICATED USER
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware('auth')->group(function () {
+    Route::get('/menu/{id}', [UserMenuController::class, 'show'])->name('menu.show');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 });
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN AREA
-|--------------------------------------------------------------------------
-| (sementara auth dulu, role nyusul)
-*/
+
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])
         ->name('dashboard');
 
-    // MENU MANAGEMENT
+
+
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
     Route::get('/menu/create', [MenuController::class, 'create'])->name('menu.create');
     Route::post('/menu', [MenuController::class, 'store'])->name('menu.store');

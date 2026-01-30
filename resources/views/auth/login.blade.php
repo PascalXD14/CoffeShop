@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | AmbaCoffe
-    </title>
+    <title>Login | Coffee Haven</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -32,10 +31,10 @@
             <div>
                 <div class="flex items-center mb-10">
                     <i class="fas fa-mug-hot text-3xl mr-3"></i>
-                    <h1 class="text-3xl font-bold">AmbaCoffe</h1>
+                    <h1 class="text-3xl font-bold">Coffee Haven</h1>
                 </div>
                 
-                <h2 class="text-2xl font-bold mb-6">Selamat Datang  </h2>
+                <h2 class="text-2xl font-bold mb-6">Selamat Datang Kembali</h2>
                 <p class="text-gray-100 mb-8">Masuk ke akun Anda untuk menikmati pengalaman terbaik memesan kopi favorit Anda secara online.</p>
                 
                 <div class="space-y-6">
