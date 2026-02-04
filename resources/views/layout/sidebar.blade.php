@@ -82,7 +82,6 @@
                     <i class="fas fa-receipt {{ request()->is('admin/orders*') ? 'text-white' : 'text-amber-300' }}"></i>
                 </div>
                 <span class="font-medium {{ request()->is('admin/orders*') ? 'text-white' : 'group-hover:text-white' }}">Kelola Pesanan</span>
-                <span class="ml-auto bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2.5 py-1 rounded-full font-bold shadow-lg animate-pulse">12</span>
             </a>
 
             <!-- Divider -->
@@ -129,7 +128,7 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="md:ml-72 transition-all duration-300">
+    <div class="md:ml-72 transition-all duration-300 min-h-screen pb-20">
         <!-- Top Bar -->
         <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-30 border-b border-orange-100">
             <div class="flex items-center justify-between px-6 py-4">
@@ -228,8 +227,14 @@
                     <div class="relative">
                         <button id="userMenuButton" class="flex items-center space-x-3 p-2 pr-4 rounded-xl hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 transition-all duration-300 group border border-transparent hover:border-orange-200">
                             <div class="relative">
-                                <div class="w-11 h-11 bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                                    <i class="fas fa-user text-white"></i>
+                                <div class="w-11 h-11 rounded-xl overflow-hidden shadow-lg bg-amber-500 group-hover:scale-105 transition-transform duration-300">
+                                    @if(auth()->user()->avatar)
+                                        <img src="{{ asset(auth()->user()->avatar) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                             </div>
@@ -244,19 +249,13 @@
                         <div id="userDropdown" class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-2xl border border-orange-100 hidden overflow-hidden">
                             <div class="p-4 bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-100">
                                 <p class="font-bold text-gray-800">{{ auth()->user()->name ?? 'Admin' }}</p>
-                                <p class="text-sm text-gray-600">admin@ambacoffe.com</p>
+                                <p class="text-sm text-gray-600">{{ auth()->user()->email }}</p>
                             </div>
                             <a href="/admin/profile" class="flex items-center px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 text-gray-700 hover:text-orange-600 transition-all duration-200 group">
                                 <div class="w-9 h-9 flex items-center justify-center bg-orange-100 rounded-lg mr-3 group-hover:bg-orange-200 transition-colors duration-200">
                                     <i class="fas fa-user-cog text-orange-600"></i>
                                 </div>
                                 <span class="font-medium">Pengaturan Profil</span>
-                            </a>
-                            <a href="#" class="flex items-center px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 text-gray-700 hover:text-orange-600 transition-all duration-200 group">
-                                <div class="w-9 h-9 flex items-center justify-center bg-blue-100 rounded-lg mr-3 group-hover:bg-blue-200 transition-colors duration-200">
-                                    <i class="fas fa-cog text-blue-600"></i>
-                                </div>
-                                <span class="font-medium">Pengaturan Sistem</span>
                             </a>
                             <form method="POST" action="/logout" class="border-t border-orange-100">
                                 @csrf
@@ -274,40 +273,41 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="p-6 md:p-8">
-            <!-- Page Header -->
-            <div class="mb-8">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-layer-group text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-3xl md:text-4xl font-playfair font-bold text-gray-800">@yield('page-title', 'Dashboard')</h1>
-                        <p class="text-gray-600 text-sm">@yield('page-description', 'Selamat datang di panel admin AmbaCoffe')</p>
-                    </div>
+       <main class="p-6 md:p-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-layer-group text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-playfair font-bold text-gray-800">@yield('page-title', 'Dashboard')</h1>
+                    <p class="text-gray-600 text-sm">@yield('page-description', 'Selamat datang di panel admin AmbaCoffe')</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Content -->
-            <div class="animate-fade-in">
-                @yield('content')
-            </div>
-        </main>
+        <!-- Content -->
+        <div class="animate-fade-in">
+            @yield('content')
+        </div>
+    </main>
 
-        <!-- Footer -->
-        <footer class="bg-white border-t border-orange-100 mt-12">
-            <div class="px-6 md:px-8 py-6">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p class="text-gray-600 text-sm">© 2024 <span class="font-semibold text-orange-600">AmbaCoffe</span>. All rights reserved.</p>
-                    <div class="flex items-center gap-6 text-sm text-gray-600">
-                        <a href="#" class="hover:text-orange-600 transition-colors duration-200">Bantuan</a>
-                        <a href="#" class="hover:text-orange-600 transition-colors duration-200">Dokumentasi</a>
-                        <a href="#" class="hover:text-orange-600 transition-colors duration-200">Kontak</a>
-                    </div>
+    <!-- Footer - FIXED DI BAWAH -->
+    <footer class="bg-white border-t border-orange-100 fixed bottom-0 left-0 right-0 md:left-72 z-20 shadow-lg">
+        <div class="px-6 md:px-8 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-600 text-sm">© 2024 <span class="font-semibold text-orange-600">AmbaCoffe</span>. All rights reserved.</p>
+                <div class="flex items-center gap-6 text-sm text-gray-600">
+                    <a href="#" class="hover:text-orange-600 transition-colors duration-200">Bantuan</a>
+                    <a href="#" class="hover:text-orange-600 transition-colors duration-200">Dokumentasi</a>
+                    <a href="#" class="hover:text-orange-600 transition-colors duration-200">Kontak</a>
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
+</div>
+
 
     <script>
         // Sidebar toggle for mobile

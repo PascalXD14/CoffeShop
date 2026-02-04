@@ -52,7 +52,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user' // 🔑 default role
+            'role' => 'user' 
         ]);
 
         return redirect('/login')->with('success', 'Akun berhasil dibuat');

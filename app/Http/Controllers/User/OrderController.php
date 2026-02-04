@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    // halaman status pesanan (LIST SEMUA)
     public function index()
     {
         $orders = Order::with('product')
@@ -19,7 +18,6 @@ class OrderController extends Controller
         return view('user.order.status', compact('orders'));
     }
 
-    // detail order
     public function show($id)
     {
         $order = Order::with('product')->findOrFail($id);

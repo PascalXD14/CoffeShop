@@ -5,35 +5,53 @@
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 py-12">
 
+@php
+// Kalau Buy Now
+if(isset($product)) {
+    $items = [
+        $product->id => [
+            'name' => $product->name,
+            'price' => $product->price,
+            'image' => $product->image,
+            'qty' => 1
+        ]
+    ];
+}
+@endphp
+
 <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-{{-- LEFT: DETAIL PRODUK --}}
+{{-- LEFT: DETAIL PESANAN (SEMUA PRODUK) --}}
 <div class="bg-white p-8 rounded-3xl shadow-xl">
     <h2 class="text-2xl font-bold mb-6">🛍️ Detail Pesanan</h2>
 
-    <div class="flex gap-6 items-center">
-        <img src="{{ asset('storage/'.$product->image) }}" class="w-32 h-32 object-cover rounded-xl shadow">
+    @foreach($items as $id => $item)
+    <div class="flex gap-6 items-center mb-6 border-b pb-4">
+        <img src="{{ asset('storage/'.$item['image']) }}" class="w-28 h-28 object-cover rounded-xl shadow">
 
-        <div>
-            <h3 class="text-xl font-bold">{{ $product->name }}</h3>
-            <p class="text-gray-500">{{ $product->description }}</p>
-
-            <p class="text-amber-600 font-bold text-lg mt-2">
-                Rp{{ number_format($product->price,0,',','.') }}
+        <div class="flex-1">
+            <h3 class="text-lg font-bold">{{ $item['name'] }}</h3>
+            <p class="text-amber-600 font-bold">
+                Rp{{ number_format($item['price'],0,',','.') }}
             </p>
+
+            <div class="mt-2 flex items-center gap-3">
+                <label>Qty:</label>
+                <input type="number" 
+                       name="qty_display[{{ $id }}]" 
+                       value="{{ $item['qty'] }}" 
+                       min="1"
+                       class="qtyInput border px-2 py-1 w-16 rounded"
+                       data-price="{{ $item['price'] }}"
+                       data-id="{{ $id }}">
+            </div>
         </div>
     </div>
+    @endforeach
 
-    {{-- Quantity --}}
-    <div class="mt-6 flex items-center gap-4">
-        <label class="font-medium">Jumlah:</label>
-        <input type="number" id="qty" value="1" min="1" max="{{ $product->stock }}"
-            class="border px-3 py-2 rounded-lg w-20 text-center">
-    </div>
-
-    {{-- Total --}}
-    <div class="mt-6 text-xl font-bold">
-        Total: <span id="totalPrice" class="text-amber-600"></span>
+    {{-- TOTAL SEMUA --}}
+    <div class="mt-6 text-2xl font-bold">
+        Total Semua: <span id="grandTotal" class="text-amber-600"></span>
     </div>
 </div>
 
@@ -43,9 +61,11 @@
 
     <form action="{{ route('checkout.confirm') }}" method="POST">
         @csrf
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
-        <input type="hidden" name="qty" id="qtyHidden">
-        <input type="hidden" name="total" id="totalHidden">
+
+        {{-- Hidden items untuk backend --}}
+        @foreach($items as $id => $item)
+            <input type="hidden" name="items[{{ $id }}][qty]" id="hiddenQty{{ $id }}" value="{{ $item['qty'] }}">
+        @endforeach
 
         {{-- Nama --}}
         <div class="mb-4">
@@ -84,19 +104,30 @@
 </div>
 </div>
 
+{{-- SCRIPT TOTAL MULTI PRODUK --}}
 <script>
-let price = {{ $product->price }};
-
 function updateTotal() {
-    let qty = document.getElementById('qty').value;
-    let total = price * qty;
+    let grandTotal = 0;
 
-    document.getElementById('totalPrice').innerText = "Rp" + total.toLocaleString('id-ID');
-    document.getElementById('qtyHidden').value = qty;
-    document.getElementById('totalHidden').value = total;
+    document.querySelectorAll('.qtyInput').forEach(input => {
+        let price = parseInt(input.dataset.price);
+        let qty = parseInt(input.value);
+        let id = input.dataset.id;
+
+        grandTotal += price * qty;
+
+        // update hidden input
+        document.getElementById('hiddenQty' + id).value = qty;
+    });
+
+    document.getElementById('grandTotal').innerText = "Rp" + grandTotal.toLocaleString('id-ID');
 }
 
-document.getElementById('qty').addEventListener('input', updateTotal);
+document.querySelectorAll('.qtyInput').forEach(input => {
+    input.addEventListener('input', updateTotal);
+});
+
 updateTotal();
 </script>
+
 @endsection

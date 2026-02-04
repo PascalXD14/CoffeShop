@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\MenuController as UserMenuController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\User\KeranjangController;
 
 
@@ -15,7 +17,17 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/menu', [UserMenuController::class, 'index'])->name('menu.user');
 
+Route::get('/about', function () {
+    return view('pages.about');
+});
 
+Route::get('/gallery', function () {
+    return view('pages.gallery');
+});
+
+Route::get('/contact', function () {
+    return view('pages.contact');
+});
 
 
 Route::middleware('guest')->group(function () {
@@ -40,6 +52,11 @@ Route::middleware('auth')->group(function () {
     //checkout
     Route::get('/checkout/{id}', [CheckoutController::class, 'buyNow'])->name('checkout.buyNow');
     Route::post('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+    Route::post('/checkout/cart', [CheckoutController::class, 'checkoutFromCart'])->name('checkout.cart');
+    Route::post('/checkout/cart', [CheckoutController::class, 'cartCheckout'])->name('checkout.cart');
+
+
+
 
     //order
     Route::get('/order-status', [OrderController::class, 'index'])->name('order.index');
@@ -55,6 +72,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])
         ->name('dashboard');
 
+    
+    Route::get('/dashboard/report/pdf', [AdminDashboardController::class, 'exportPdf'])
+        ->name('report.pdf');
+
+
 
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
@@ -63,4 +85,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/menu/{menu}/edit', [MenuController::class, 'edit'])->name('menu.edit');
     Route::put('/menu/{menu}', [MenuController::class, 'update'])->name('menu.update');
     Route::delete('/menu/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
+
+
+    //pesanan
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::put('/orders/{id}', [AdminOrderController::class, 'updateStatus'])->name('orders.update');
+
+    //profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
 });
