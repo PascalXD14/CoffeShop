@@ -17,9 +17,11 @@
                 class="pl-10 pr-4 py-2 border border-admin-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full sm:w-64">
             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-admin-400"></i>
         </div>
-        <a href="{{ route('admin.menu.create') }}" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition duration-300 flex items-center">
-            <i class="fas fa-plus mr-2"></i>Tambah Menu
-        </a>
+        <a href="{{ route('admin.menu.create') }}"
+   class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition flex items-center">
+   <i class="fas fa-plus mr-2"></i> Tambah Menu
+</a>
+
     </div>
 </div>
 

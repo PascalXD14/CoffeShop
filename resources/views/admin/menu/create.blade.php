@@ -90,9 +90,11 @@
             <a href="{{ route('admin.menu.index') }}" class="px-4 py-2 mr-3 border border-admin-300 rounded-lg hover:bg-admin-50">
                 Batal
             </a>
-            <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition duration-300">
-                Simpan Menu
-            </button>
+            <button type="submit" 
+    class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-300">
+    Simpan Menu
+</button>
+
         </div>
     </form>
 </div>

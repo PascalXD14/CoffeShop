@@ -82,7 +82,7 @@
 
         <!-- Tombol Simpan -->
         <div class="mt-6">
-            <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">
+            <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-300">
                 Perbarui Menu
             </button>
             <a href="{{ route('admin.menu.index') }}" class="ml-3 text-gray-600 hover:underline">Batal</a>
